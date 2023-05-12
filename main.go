@@ -15,10 +15,6 @@ func getPrime(n int) *big.Int {
 	return q
 }
 
-func isPrime(n *big.Int) bool {
-	return n.ProbablyPrime(20)
-}
-
 // 判断一个数是否为素数的原根
 func isPrimitiveRoot(a, p *big.Int) bool {
 	phi := big.NewInt(0).Sub(p, big.NewInt(1))
