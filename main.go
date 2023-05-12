@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"crypto/rc4"
 	"fmt"
 	"math/big"
 )
@@ -77,4 +78,26 @@ func main() {
 	Alice.key = new(big.Int).Exp(Bob.publicKey, Alice.privateKey, p)
 	Bob.key = new(big.Int).Exp(Alice.publicKey, Bob.privateKey, p)
 	fmt.Printf("Alice.key:%v\nBob.key:%v\n", Alice.key, Bob.key)
+
+	plaintext := []byte("Hello, world!")
+
+	// 使用Alice的密钥进行RC4加密
+	cipher, err := rc4.NewCipher(Alice.key.Bytes())
+	if err != nil {
+		panic(err)
+	}
+
+	ciphertext := make([]byte, len(plaintext))
+	cipher.XORKeyStream(ciphertext, plaintext)
+	fmt.Printf("Ciphertext: %x\n", ciphertext)
+
+	// 使用Bob的密钥进行RC4解密
+	decipher, err := rc4.NewCipher(Bob.key.Bytes())
+	if err != nil {
+		panic(err)
+	}
+	decrypted := make([]byte, len(ciphertext))
+	decipher.XORKeyStream(decrypted, ciphertext)
+	fmt.Printf("Decrypted: %s\n", decrypted)
+
 }
