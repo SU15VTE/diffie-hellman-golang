@@ -56,7 +56,6 @@ func genPrimitiveRoot(p *big.Int) *big.Int {
 }
 
 type human struct {
-	name       string
 	publicKey  *big.Int
 	privateKey *big.Int
 	key        *big.Int
